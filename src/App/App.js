@@ -19,8 +19,22 @@ class App extends Component {
 
   componentDidMount() {
     Promise.all([
-      fetch(`${config.API_ENDPOINT}/notes`),
-      fetch(`${config.API_ENDPOINT}/folders`)
+      fetch(`${config.API_ENDPOINT}/notes`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + config.API_KEY
+        }
+        
+      }),
+      fetch(`${config.API_ENDPOINT}/folders`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + config.API_KEY
+        }
+
+      })
     ])
       .then(([notesRes, foldersRes]) => {
         if (!notesRes.ok)
@@ -34,6 +48,7 @@ class App extends Component {
         ])
       })
       .then(([notes, folders]) => {
+        console.log(notes, folders)
         this.setState({ notes, folders })
       })
       .catch(error => {
